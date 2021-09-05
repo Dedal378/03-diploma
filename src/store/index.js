@@ -7,8 +7,15 @@ export default createStore({
         {
           id: '0768768',
           title: 'Записать решение 3 курсовой',
-          date: '24.05.23',
-          status: 'danger',
+          date: new Date().getTime(),
+          status: 'primary',
+          text: 'Текст этой задачи',
+        },
+        {
+          id: '0768769',
+          title: 'Записать решение 3 курсовой',
+          date: new Date().getTime(),
+          status: 'primary',
           text: 'Текст этой задачи',
         },
       ],
@@ -20,13 +27,17 @@ export default createStore({
       ],
     }
   },
-  mutations: {
-  },
-  actions: {
-  },
+  mutations: {},
+  actions: {},
   getters: {
     tasks(state) {
       return state.tasks
+    },
+    badges(state) {
+      return state.badges
+    },
+    taskId(_, getters) {
+      return id => getters.tasks.find(t => t.id === id)
     },
   },
 })

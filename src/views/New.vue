@@ -22,4 +22,18 @@
 
 
 <script>
+import { ref } from "vue";
+import { v4 as uuidv4 } from 'uuid'
+
+export default {
+  name: 'New',
+  setup() {
+    const newTask = ref('')
+    const takeId = () => uuidv4()
+
+    return {
+      newTask, takeId
+    }
+  },
+}
 </script>

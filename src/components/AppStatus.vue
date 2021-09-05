@@ -1,5 +1,5 @@
 <template>
-  <span :class="['badge', type]">Активен</span>
+  <span :class="['badge', computedType]">Активен</span>
 </template>
 
 <script>
@@ -13,11 +13,8 @@ export default {
       requires: true,
     },
   },
-  setup() {
-    const computedType = computed(() => {
-        return 'asdfasd'
-      }
-    )
+  setup(props) {
+    const computedType = computed(() => props.type)
 
     return {
       computedType,
@@ -25,4 +22,3 @@ export default {
   },
 }
 </script>
-in
