@@ -3,29 +3,7 @@ import { createStore } from 'vuex'
 export default createStore({
   state() {
     return {
-      tasks: [
-        {
-          id: '0768768',
-          title: 'Записать решение 3 курсовой',
-          date: new Date().getTime(),
-          status: 'active',
-          text: 'Текст этой задачи',
-        },
-        {
-          id: '0768769',
-          title: 'Записать решение 3 курсовой',
-          date: new Date().getTime(),
-          status: 'active',
-          text: 'Текст этой задачи',
-        },
-        {
-          id: '0768770',
-          title: 'Записать решение 3 курсовой',
-          date: new Date().getTime(),
-          status: 'inAction',
-          text: 'Текст этой задачи',
-        },
-      ],
+      tasks: [],
       badges: [
         { active: 'primary' },
         { inAction: 'warning' },
@@ -34,8 +12,12 @@ export default createStore({
       ],
     }
   },
-  mutations: {},
-  actions: {},
+  mutations: {
+
+  },
+  actions: {
+
+  },
   getters: {
     tasks(state) {
       return state.tasks

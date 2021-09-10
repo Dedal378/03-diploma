@@ -5,7 +5,7 @@
       <AppStatus :type="task.status" />
       {{ task.status }}
     </p>
-    <p><strong>Дэдлайн</strong>: {{ new Date(task.date).toLocaleDateString() }}</p>
+    <p><strong>Дэдлайн</strong>: {{ new Date(Number(task.date)).toLocaleDateString() }}</p>
     <p><strong>Описание</strong>: {{ task.text }}</p>
     <div>
       <button class="btn" @click="setStatus('inAction')">Взять в работу</button>
