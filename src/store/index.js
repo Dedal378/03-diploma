@@ -8,22 +8,29 @@ export default createStore({
           id: '0768768',
           title: 'Записать решение 3 курсовой',
           date: new Date().getTime(),
-          status: 'primary',
+          status: 'active',
           text: 'Текст этой задачи',
         },
         {
           id: '0768769',
           title: 'Записать решение 3 курсовой',
           date: new Date().getTime(),
-          status: 'primary',
+          status: 'active',
+          text: 'Текст этой задачи',
+        },
+        {
+          id: '0768770',
+          title: 'Записать решение 3 курсовой',
+          date: new Date().getTime(),
+          status: 'inAction',
           text: 'Текст этой задачи',
         },
       ],
       badges: [
-        { done: 'primary' },
-        { cancelled: 'danger' },
+        { active: 'primary' },
         { inAction: 'warning' },
         { completed: 'primary' },
+        { cancelled: 'danger' },
       ],
     }
   },
@@ -33,11 +40,11 @@ export default createStore({
     tasks(state) {
       return state.tasks
     },
-    badges(state) {
-      return state.badges
-    },
     taskId(_, getters) {
       return id => getters.tasks.find(t => t.id === id)
+    },
+    taskActive(state) {
+      return state.tasks.filter(t => t.status === 'active').length
     },
   },
 })

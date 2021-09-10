@@ -7,7 +7,7 @@
   </h1>
 
   <template v-else>
-    <h3 class="text-white">Всего активных задач: {{ tasks.length }}</h3>
+    <h3 class="text-white">Всего активных задач: {{ taskActive }}</h3>
 
     <div
         v-for="task in tasks"
@@ -50,12 +50,12 @@ export default {
     const router = useRouter()
 
     const tasks = computed(() => store.getters.tasks)
-    const badges = computed(() => store.getters.badges)
+    const taskActive = computed(() => store.getters.taskActive)
 
     const openTask = id => router.push(`/task/${ id }`)
 
     return {
-      tasks, badges, openTask
+      tasks, openTask, taskActive
     }
   },
   components: { AppStatus },
