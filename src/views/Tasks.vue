@@ -50,6 +50,7 @@ export default {
     const router = useRouter()
 
     const tasks = computed(() => store.getters.tasks)
+    console.log(tasks)
     const taskActive = computed(() => store.getters.taskActive)
 
     const openTask = id => router.push(`/task/${ id }`)

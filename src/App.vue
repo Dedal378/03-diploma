@@ -6,26 +6,19 @@
 </template>
 
 <script>
-import { onMounted } from 'vue'
 import TheNavbar from './components/TheNavbar'
-import axios from 'axios'
+import { onMounted } from 'vue'
+import { useStore } from 'vuex'
 
 export default {
   components: { TheNavbar },
   setup() {
-    const firebaseData = process.env.VUE_APP_FIREBASE_DATA
+    const store = useStore()
+    const loadTasks = () => store.dispatch('loadTasks')
 
-    const loadTasks = async function (firebaseData) {
-      // eslint-disable-next-line no-unused-vars
-      const { data } = await axios.get(`${ firebaseData }/tasks.json`)
-      console.log(data)
-    }
+    onMounted(() => loadTasks())
 
-    onMounted(() => loadTasks(firebaseData))
-
-    return {
-      firebaseData, loadTasks
-    }
+    return { loadTasks }
   },
 }
 </script>

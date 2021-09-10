@@ -1,4 +1,5 @@
 import { createStore } from 'vuex'
+import axios from "axios"
 
 export default createStore({
   state() {
@@ -13,10 +14,18 @@ export default createStore({
     }
   },
   mutations: {
-
+    loadTasks(state, tasks) {
+      state.tasks = Object.keys(tasks).map(key => {
+        return { ...tasks[key] }
+      })
+    },
   },
   actions: {
-
+    async loadTasks({ commit }) {
+      const firebaseData = process.env.VUE_APP_FIREBASE_DATA
+      const { data } = await axios.get(`${ firebaseData }/tasks.json`)
+      commit('loadTasks', data)
+    },
   },
   getters: {
     tasks(state) {
