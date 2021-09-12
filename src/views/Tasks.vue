@@ -45,12 +45,12 @@ import { useRouter } from 'vue-router'
 
 export default {
   name: 'Home',
+  components: { AppStatus },
   setup() {
     const store = useStore()
     const router = useRouter()
 
     const tasks = computed(() => store.getters.tasks)
-    console.log(tasks)
     const taskActive = computed(() => store.getters.taskActive)
 
     const openTask = id => router.push(`/task/${ id }`)
@@ -59,6 +59,5 @@ export default {
       tasks, openTask, taskActive
     }
   },
-  components: { AppStatus },
 }
 </script>

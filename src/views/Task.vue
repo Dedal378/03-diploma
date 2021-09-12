@@ -25,25 +25,20 @@ import AppStatus from '@/components/AppStatus'
 
 export default {
   name: 'Task',
+  components: { AppStatus },
   props: ['id'],
   setup(props) {
     const store = useStore()
 
-    // eslint-disable-next-line vue/no-setup-props-destructure
-    const id = props.id
-
-    const task = computed(() => store.getters.taskId(id))
+    const task = computed(() => store.getters.taskId(props.id))
     const type = computed(() => store.getters.badges.done)
-    const setStatus = status => {
 
-      return status
-    }
+    const setStatus = status => store.dispatch('setStatus', status)
 
     return {
       type, task, setStatus
     }
   },
-  components: { AppStatus },
 }
 </script>
 

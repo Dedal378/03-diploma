@@ -1,6 +1,8 @@
 import { createStore } from 'vuex'
 import axios from "axios"
 
+const firebaseLink = process.env.VUE_APP_FIREBASE_LINK
+
 export default createStore({
   state() {
     return {
@@ -19,12 +21,18 @@ export default createStore({
         return { ...tasks[key] }
       })
     },
+    setStatus(state, status) {
+      state.tasks.map(key => key.status = status)
+    },
   },
   actions: {
     async loadTasks({ commit }) {
-      const firebaseData = process.env.VUE_APP_FIREBASE_DATA
-      const { data } = await axios.get(`${ firebaseData }/tasks.json`)
+      const { data } = await axios.get(`${ firebaseLink }/tasks.json`)
       commit('loadTasks', data)
+    },
+    async setStatus({ commit }, status) {
+
+      commit('setStatus', status)
     },
   },
   getters: {
