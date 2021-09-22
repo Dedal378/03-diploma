@@ -7,12 +7,6 @@ export default createStore({
   state() {
     return {
       tasks: [],
-      badges: [
-        { active: 'primary' },
-        { inAction: 'warning' },
-        { completed: 'primary' },
-        { cancelled: 'danger' },
-      ],
     }
   },
   mutations: {
@@ -21,8 +15,9 @@ export default createStore({
         return { ...tasks[key] }
       })
     },
-    setStatus(state, status) {
-      state.tasks.map(key => key.status = status)
+    setStatus(state, newStatus) {
+      const id = state.tasks.findIndex(t => t.id === newStatus.id)
+      state.tasks[id] = newStatus
     },
   },
   actions: {
@@ -30,9 +25,8 @@ export default createStore({
       const { data } = await axios.get(`${ firebaseLink }/tasks.json`)
       commit('loadTasks', data)
     },
-    async setStatus({ commit }, status) {
-
-      commit('setStatus', status)
+    async setStatus({ commit }, payload) {
+      commit('setStatus', payload)
     },
   },
   getters: {

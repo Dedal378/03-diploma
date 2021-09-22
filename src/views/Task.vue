@@ -1,10 +1,7 @@
 <template>
   <div class="card" v-if="task">
     <h2>{{ task.title }}</h2>
-    <p><strong>Статус</strong>:
-      <AppStatus :type="task.status" />
-      {{ task.status }}
-    </p>
+    <p><strong>Статус</strong>: <AppStatus :type="task.status" /></p>
     <p><strong>Дэдлайн</strong>: {{ new Date(Number(task.date)).toLocaleDateString() }}</p>
     <p><strong>Описание</strong>: {{ task.text }}</p>
     <div>
@@ -31,12 +28,14 @@ export default {
     const store = useStore()
 
     const task = computed(() => store.getters.taskId(props.id))
-    const type = computed(() => store.getters.badges.done)
 
-    const setStatus = status => store.dispatch('setStatus', status)
+    const setStatus = status => {
+      const updated = { ...task.value, status }
+      store.dispatch('setStatus', updated)
+    }
 
     return {
-      type, task, setStatus
+      task, setStatus
     }
   },
 }
