@@ -16,17 +16,19 @@ export default createStore({
       })
     },
     setStatus(state, newStatus) {
-      const id = state.tasks.findIndex(t => t.id === newStatus.id)
-      state.tasks[id] = newStatus
+      const id = state.tasks.find(t => t.id === newStatus.id)
+      id.status = newStatus.status
     },
   },
   actions: {
     async loadTasks({ commit }) {
-      const { data } = await axios.get(`${ firebaseLink }/tasks.json`)
+      const { data } = await axios.get(`${ firebaseLink }tasks.json`)
       commit('loadTasks', data)
     },
-    async setStatus({ commit }, payload) {
-      commit('setStatus', payload)
+    async setStatus({ commit, state }, newStatus) {
+      const id = state.tasks.find(t => t.id === newStatus.id).id
+      await axios.put(`${ firebaseLink }tasks/${id}.json`, newStatus)
+      commit('setStatus', newStatus)
     },
   },
   getters: {
