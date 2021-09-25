@@ -16,14 +16,22 @@ export default createStore({
     setStatus(state, newStatus) {
       const id = state.tasks.find(t => t.id === newStatus.id)
       id.status = newStatus.status
+      localStorage.setItem('tasks', JSON.stringify(state.tasks))
     },
     createTask(state, tasks) {
       state.tasks.push(tasks)
+      localStorage.setItem('tasks', JSON.stringify(state.tasks))
     },
   },
   actions: {
     async loadTasks({ commit }) {
       let { data: tasks } = await axios.get(`${ firebaseLink }tasks.json`)
+
+      if (localStorage !== 'tasks') {
+        localStorage.setItem('tasks', JSON.stringify(tasks))
+      } else {
+        JSON.parse(localStorage.getItem('tasks'))
+      }
 
       tasks = Object.keys(tasks).map(key => {
         return { ...tasks[key] }
