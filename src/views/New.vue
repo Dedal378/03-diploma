@@ -12,27 +12,55 @@
     </div>
 
     <div class="form-control">
-      <label for="description">Описание</label>
-      <textarea id="description" v-model="taskText"></textarea>
+      <label>Описание</label>
+      <textarea type="date" id="description" v-model="taskText"></textarea>
     </div>
 
-    <button class="btn primary" @click="submitNewTask">Создать</button>
+    <button class="btn primary" :disabled="isValid">Создать</button>
   </form>
 </template>
 
 
 <script>
-import { ref } from "vue";
-import { v4 as uuidv4 } from 'uuid'
+import { computed, ref } from "vue"
+import { useStore } from 'vuex'
+import { useRouter } from 'vue-router'
 
 export default {
   name: 'New',
   setup() {
-    const newTask = ref('')
-    const takeId = () => uuidv4()
+    const store = useStore()
+    const router = useRouter()
+    const taskName = ref('')
+    const taskDate = ref(null)
+    const taskText = ref('')
+
+    const newTask = () => {
+      const newTaskValues = {
+        id: '',
+        title: taskName.value,
+        text: taskText.value,
+        date: new Date(taskDate.value).setHours(23, 59, 59, 999),
+        status: 'active'
+      }
+
+      if (newTaskValues.date < new Date()) {
+        newTaskValues.status = 'cancelled'
+      }
+
+      store.dispatch('createTask', newTaskValues)
+      router.push('/')
+    }
+
+    const isValid = computed(() => {
+      if (taskName.value && taskDate.value && taskText.value !== '') {
+        return false
+      }
+      return true
+    })
 
     return {
-      newTask, takeId
+      taskName, taskDate, taskText, newTask, isValid
     }
   },
 }

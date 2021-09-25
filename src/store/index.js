@@ -11,24 +11,40 @@ export default createStore({
   },
   mutations: {
     loadTasks(state, tasks) {
-      state.tasks = Object.keys(tasks).map(key => {
-        return { ...tasks[key] }
-      })
+      state.tasks = tasks
     },
     setStatus(state, newStatus) {
       const id = state.tasks.find(t => t.id === newStatus.id)
       id.status = newStatus.status
     },
+    createTask(state, tasks) {
+      state.tasks.push(tasks)
+    },
   },
   actions: {
     async loadTasks({ commit }) {
-      const { data } = await axios.get(`${ firebaseLink }tasks.json`)
-      commit('loadTasks', data)
+      let { data: tasks } = await axios.get(`${ firebaseLink }tasks.json`)
+
+      tasks = Object.keys(tasks).map(key => {
+        return { ...tasks[key] }
+      })
+      commit('loadTasks', tasks)
     },
     async setStatus({ commit, state }, newStatus) {
       const id = state.tasks.find(t => t.id === newStatus.id).id
-      await axios.put(`${ firebaseLink }tasks/${id}.json`, newStatus)
+      await axios.put(`${ firebaseLink }tasks/${ id }.json`, newStatus)
       commit('setStatus', newStatus)
+    },
+    async createTask({ commit }, task) {
+      await axios.post(`${ firebaseLink }tasks.json`, task)
+
+      let { data: tasks } = await axios.get(`${ firebaseLink }tasks.json`)
+      const arrTasks = Object.entries(tasks)
+      const lastEl = arrTasks[arrTasks.length - 1]
+      lastEl[1].id = lastEl[0]
+      tasks = await axios.put(`${ firebaseLink }tasks/${ lastEl[0] }.json`, lastEl[1])
+
+      commit('createTask', tasks.data)
     },
   },
   getters: {

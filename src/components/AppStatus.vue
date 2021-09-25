@@ -16,15 +16,15 @@ export default {
   setup(props) {
     const classes = {
       active: 'primary',
-      inAction: 'warning',
-      completed: 'primary',
+      pending: 'warning',
+      done: 'primary',
       cancelled: 'danger'
     }
 
     const values = {
       active: 'Активен',
-      inAction: 'Выполняется',
-      completed: 'Завершен',
+      pending: 'Выполняется',
+      done: 'Завершен',
       cancelled: 'Отменен'
     }
 
