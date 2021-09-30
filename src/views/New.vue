@@ -13,7 +13,7 @@
 
     <div class="form-control">
       <label>Описание</label>
-      <textarea type="date" id="description" v-model="taskText"></textarea>
+      <textarea type="text" id="description" v-model="taskText"></textarea>
     </div>
 
     <button class="btn primary" :disabled="isValid">Создать</button>
@@ -47,7 +47,6 @@ export default {
       if (newTaskValues.date < new Date()) {
         newTaskValues.status = 'cancelled'
       }
-
       store.dispatch('createTask', newTaskValues)
       router.push('/')
     }

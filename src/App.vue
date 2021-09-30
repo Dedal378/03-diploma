@@ -1,7 +1,11 @@
 <template>
   <the-navbar></the-navbar>
   <div class="container with-nav">
-    <router-view />
+    <router-view v-slot="{ Component, route }">
+      <transition name="fade">
+        <component :is="Component" :key="route.path" />
+      </transition>
+    </router-view>
   </div>
 </template>
 

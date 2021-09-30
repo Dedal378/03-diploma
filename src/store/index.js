@@ -7,9 +7,13 @@ export default createStore({
   state() {
     return {
       tasks: [],
+      loading: false
     }
   },
   mutations: {
+    setLoading(state, payload) {
+      state.loading = payload
+    },
     loadTasks(state, tasks) {
       state.tasks = tasks
     },
@@ -24,7 +28,11 @@ export default createStore({
     },
   },
   actions: {
+    setLoading({ commit }, payload) {
+      commit('setLoading', payload)
+    },
     async loadTasks({ commit }) {
+      commit('setLoading', true)
       let { data: tasks } = await axios.get(`${ firebaseLink }tasks.json`)
 
       if (localStorage !== 'tasks') {
@@ -37,6 +45,7 @@ export default createStore({
         return { ...tasks[key] }
       })
       commit('loadTasks', tasks)
+      commit('setLoading', false)
     },
     async setStatus({ commit, state }, newStatus) {
       const id = state.tasks.find(t => t.id === newStatus.id).id
@@ -56,6 +65,9 @@ export default createStore({
     },
   },
   getters: {
+    loading(state) {
+      return state.loading
+    },
     tasks(state) {
       return state.tasks
     },
@@ -64,6 +76,13 @@ export default createStore({
     },
     taskActive(state) {
       return state.tasks.filter(t => t.status === 'active').length
+    },
+    filterByStatus(_, getters) {
+      const filteredTasks = status => {
+        if (status === '') return getters.tasks
+        return getters.tasks.filter(t => t.status === status)
+      }
+      return filteredTasks
     },
   },
 })
