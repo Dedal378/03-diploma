@@ -51,12 +51,7 @@ export default {
       router.push('/')
     }
 
-    const isValid = computed(() => {
-      if (taskName.value && taskDate.value && taskText.value !== '') {
-        return false
-      }
-      return true
-    })
+    const isValid = computed(() => taskName.value && taskDate.value && taskText.value !== '')
 
     return {
       taskName, taskDate, taskText, newTask, isValid

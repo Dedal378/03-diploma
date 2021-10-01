@@ -1,82 +1,66 @@
 <template>
   <h1
       v-if="tasks.length === 0"
+      :class="{ loader: loading }"
       class="text-white center"
-      :class="{loader: loading}"
   >
     Задач пока нет
   </h1>
 
   <template v-else>
-    <transition name="fade" appear>
+    <transition appear name="fade">
       <h3 class="text-white">Всего активных задач: {{ taskActive }}</h3>
     </transition>
 
     <div class="card marked filter">
       <h3 class="">ФИЛЬТР ПО СТАТУСУ</h3>
-      <select v-model="statusSelect">
-        <option disabled selected value=""><strong>Выберите cтатус</strong></option>
-        <option v-for="(option, idx) in statusOptionEl" :key="idx" :value="option">{{ option.toUpperCase() }}</option>
-      </select>
+
+      <TasksFilter
+          :filtered-elements="filteredElements"
+          @new-status="newStatus"
+      />
     </div>
 
     <transition-group
         name="fade"
         tag="div"
     >
-      <div
-          v-for="task in getFilterStatus"
-          :key="task.id"
-          class="card"
-      >
-        <h2 class="card-title">
-          {{ task.title }}
-          <AppStatus :type="task.status" />
-        </h2>
-
-        <p>
-          <strong>
-            <small>
-              {{ new Date(task.date).toLocaleDateString() }}
-            </small>
-          </strong>
-        </p>
-
-        <button
-            @click="openTask(task.id)"
-            class="btn primary"
-        >
-          Посмотреть
-        </button>
-      </div>
+      <TasksElements
+          :get-filter-status="getFilterStatus"
+          @open-task="openTask"
+      />
     </transition-group>
   </template>
 </template>
 
 <script>
-import AppStatus from '../components/AppStatus'
 import { computed, reactive, ref } from "vue"
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
+import TasksElements from "@/components/TasksElements";
+import TasksFilter from "@/views/TasksFilter";
 
 export default {
   name: 'Home',
-  components: { AppStatus },
+  components: { TasksFilter, TasksElements },
   setup() {
-    const statusOptionEl = reactive(['', 'active', 'pending', 'done', 'cancelled'])
-    const statusSelect = ref('')
+    const filteredElements = reactive(['', 'active', 'pending', 'done', 'cancelled'])
+    const selectedStatus = ref('')
     const store = useStore()
     const router = useRouter()
 
     const tasks = computed(() => store.getters.tasks)
     const taskActive = computed(() => store.getters.taskActive)
     const loading = computed(() => store.getters.loading)
-    const getFilterStatus = computed(() => store.getters.filterByStatus(statusSelect.value))
+    const getFilterStatus = computed(() => store.getters.filterByStatus(selectedStatus.value))
 
-    const openTask = id => router.push(`/task/${ id }`)
+    const newStatus = status => selectedStatus.value = status
+
+    const openTask = id =>  router.push(`/task/${ id }`)
 
     return {
-      tasks,taskActive, openTask, loading, getFilterStatus, statusSelect, statusOptionEl
+      tasks, taskActive, openTask, loading, getFilterStatus,
+      filteredElements, newStatus, selectedStatus
     }
   },
 }
