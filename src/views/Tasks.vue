@@ -8,7 +8,9 @@
   </h1>
 
   <template v-else>
-    <h3 class="text-white">Всего активных задач: {{ taskActive }}</h3>
+    <transition name="fade" appear>
+      <h3 class="text-white">Всего активных задач: {{ taskActive }}</h3>
+    </transition>
 
     <div class="card marked filter">
       <h3 class="">ФИЛЬТР ПО СТАТУСУ</h3>
