@@ -8,23 +8,22 @@
   </h1>
 
   <template v-else>
-    <transition appear name="fade">
       <h3 class="text-white">Всего активных задач: {{ taskActive }}</h3>
-    </transition>
 
     <div class="card marked filter">
       <h3 class="">ФИЛЬТР ПО СТАТУСУ</h3>
 
-      <TasksFilter
+      <AppFilter
           :arr-elements="arrElements"
           @new-status="newStatus"
+          @reset-filter="resetStatus"
       />
     </div>
 
-    <TasksElements
-        :tasks="getTasksByStatus"
-        @open-task="openTask"
-    />
+      <TasksElements
+          :tasks="tasksByStatus"
+          @open-task="openTask"
+      />
   </template>
 </template>
 
@@ -33,13 +32,13 @@ import { computed, reactive, ref } from "vue"
 import { useStore } from 'vuex'
 import { useRouter } from 'vue-router'
 import TasksElements from "@/components/TasksElements";
-import TasksFilter from "@/views/TasksFilter";
+import AppFilter from "@/components/AppFilter";
 
 export default {
   name: 'Home',
-  components: { TasksFilter, TasksElements },
+  components: { AppFilter, TasksElements },
   setup() {
-    const arrElements = reactive(['', 'active', 'pending', 'done', 'cancelled'])
+    const arrElements = reactive(['active', 'pending', 'done', 'cancelled'])
     const selectedStatus = ref('')
     const store = useStore()
     const router = useRouter()
@@ -47,15 +46,16 @@ export default {
     const tasks = computed(() => store.getters.tasks)
     const taskActive = computed(() => store.getters.taskActive)
     const loading = computed(() => store.getters.loading)
-    const getTasksByStatus = computed(() => store.getters.filterByStatus(selectedStatus.value))
+    const tasksByStatus = computed(() => store.getters.filterByStatus(selectedStatus.value))
 
     const newStatus = status => selectedStatus.value = status
+    const resetStatus = () => selectedStatus.value = ''
 
     const openTask = id =>  router.push(`/task/${ id }`)
 
     return {
-      tasks, taskActive, openTask, loading, getTasksByStatus,
-      arrElements, newStatus, selectedStatus
+      tasks, taskActive, openTask, loading, tasksByStatus,
+      arrElements, newStatus, selectedStatus, resetStatus
     }
   },
 }
