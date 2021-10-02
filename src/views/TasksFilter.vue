@@ -1,13 +1,13 @@
 <template>
   <select v-model="selectedStatus">
     <option disabled selected value="">
-      <strong>Статус</strong>
+      Статус
     </option>
     <option
-        v-for="(option, idx) in filteredElements"
+        v-for="(option, idx) in arrElements"
         :key="idx"
-        :value="option"
         @click="$emit('new-status', selectedStatus)"
+        :value="option"
     >
       {{ option.toUpperCase() }}
     </option>
@@ -19,18 +19,16 @@ import { ref } from "vue";
 export default {
   name: 'TasksFilter',
   props: {
-    filteredElements: Object,
+    arrElements: {
+      type: Array,
+      required: true
+    }
   },
   emits: ['new-status'],
   setup() {
     const selectedStatus = ref('')
 
     return { selectedStatus }
-  },
-  /*  data() {
-    return {
-      selectedStatus: '',
-    }
-  }*/
+  }
 }
 </script>

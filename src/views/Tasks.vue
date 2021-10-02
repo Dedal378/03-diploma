@@ -16,7 +16,7 @@
       <h3 class="">ФИЛЬТР ПО СТАТУСУ</h3>
 
       <TasksFilter
-          :filtered-elements="filteredElements"
+          :arr-elements="arrElements"
           @new-status="newStatus"
       />
     </div>
@@ -26,7 +26,7 @@
         tag="div"
     >
       <TasksElements
-          :get-filter-status="getFilterStatus"
+          :tasks="getTasksByStatus"
           @open-task="openTask"
       />
     </transition-group>
@@ -44,7 +44,7 @@ export default {
   name: 'Home',
   components: { TasksFilter, TasksElements },
   setup() {
-    const filteredElements = reactive(['', 'active', 'pending', 'done', 'cancelled'])
+    const arrElements = reactive(['', 'active', 'pending', 'done', 'cancelled'])
     const selectedStatus = ref('')
     const store = useStore()
     const router = useRouter()
@@ -52,15 +52,15 @@ export default {
     const tasks = computed(() => store.getters.tasks)
     const taskActive = computed(() => store.getters.taskActive)
     const loading = computed(() => store.getters.loading)
-    const getFilterStatus = computed(() => store.getters.filterByStatus(selectedStatus.value))
+    const getTasksByStatus = computed(() => store.getters.filterByStatus(selectedStatus.value))
 
     const newStatus = status => selectedStatus.value = status
 
     const openTask = id =>  router.push(`/task/${ id }`)
 
     return {
-      tasks, taskActive, openTask, loading, getFilterStatus,
-      filteredElements, newStatus, selectedStatus
+      tasks, taskActive, openTask, loading, getTasksByStatus,
+      arrElements, newStatus, selectedStatus
     }
   },
 }

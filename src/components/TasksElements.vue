@@ -1,6 +1,6 @@
 <template>
   <div
-      v-for="task in getFilterStatus"
+      v-for="task in tasks"
       :key="task.id"
       class="card"
   >
@@ -27,14 +27,14 @@
 </template>
 <script>
 import AppStatus from '@/components/AppStatus'
-// import { useRouter } from "vue-router";
 
 export default {
   name: 'TasksElements',
   components: { AppStatus },
   props: {
-    getFilterStatus: {
-      type: String,
+    tasks: {
+      type: Array,
+      required: true
     },
   },
   emits: ['open-task']
