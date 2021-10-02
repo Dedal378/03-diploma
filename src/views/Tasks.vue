@@ -8,7 +8,7 @@
   </h1>
 
   <template v-else>
-      <h3 class="text-white">Всего активных задач: {{ taskActive }}</h3>
+    <h3 class="text-white">Всего активных задач: {{ taskActive }}</h3>
 
     <div class="card marked filter">
       <h3 class="">ФИЛЬТР ПО СТАТУСУ</h3>
@@ -20,10 +20,10 @@
       />
     </div>
 
-      <TasksElements
-          :tasks="tasksByStatus"
-          @open-task="openTask"
-      />
+    <TasksElements
+        :tasks="tasksByStatus"
+        @open-task="openTask"
+    />
   </template>
 </template>
 
@@ -51,7 +51,7 @@ export default {
     const newStatus = status => selectedStatus.value = status
     const resetStatus = () => selectedStatus.value = ''
 
-    const openTask = id =>  router.push(`/task/${ id }`)
+    const openTask = id => router.push(`/task/${ id }`)
 
     return {
       tasks, taskActive, openTask, loading, tasksByStatus,
