@@ -21,15 +21,10 @@
       />
     </div>
 
-    <transition-group
-        name="fade"
-        tag="div"
-    >
-      <TasksElements
-          :tasks="getTasksByStatus"
-          @open-task="openTask"
-      />
-    </transition-group>
+    <TasksElements
+        :tasks="getTasksByStatus"
+        @open-task="openTask"
+    />
   </template>
 </template>
 

@@ -79,7 +79,7 @@ export default createStore({
     },
     filterByStatus(_, getters) {
       const filteredTasks = status => {
-        if (status === '') return getters.tasks
+        if (!status) return getters.tasks
         return getters.tasks.filter(t => t.status === status)
       }
       return filteredTasks

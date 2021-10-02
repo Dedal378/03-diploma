@@ -1,12 +1,11 @@
 <template>
-  <select v-model="selectedStatus">
+  <select @change="(event) => $emit('new-status', event.target.value)">
     <option disabled selected value="">
       Статус
     </option>
     <option
         v-for="(option, idx) in arrElements"
         :key="idx"
-        @click="$emit('new-status', selectedStatus)"
         :value="option"
     >
       {{ option.toUpperCase() }}
@@ -14,7 +13,6 @@
   </select>
 </template>
 <script>
-import { ref } from "vue";
 
 export default {
   name: 'TasksFilter',
@@ -24,11 +22,6 @@ export default {
       required: true
     }
   },
-  emits: ['new-status'],
-  setup() {
-    const selectedStatus = ref('')
-
-    return { selectedStatus }
-  }
+  emits: ['new-status']
 }
 </script>
