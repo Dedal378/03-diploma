@@ -19,7 +19,7 @@ import { ref } from "vue";
 export default {
   name: 'AppFilter',
   props: ['arrElements'],
-  emits: ['new-status'],
+  emits: ['new-status', 'reset-filter'],
   setup(_, { emit }) {
     const selectedElement = ref('')
     const newStatus = () => emit('new-status', selectedElement.value)

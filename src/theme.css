@@ -403,6 +403,10 @@ select {
   transform: translateY(70px);
 }
 
+.fade-move {
+  transition: transform 0.8s ease;
+}
+
 
 
 .navbar {
